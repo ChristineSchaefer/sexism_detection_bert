@@ -29,8 +29,9 @@ def main(args):
     aug10p = nlpaw.ContextualWordEmbsAug(model_path='distilbert-base-uncased', aug_min=1, aug_p=0.1,
                                          action="substitute")
 
-    # Upsample minority class ('isToxic' == 1) to create a roughly 50-50 class distribution
+    # Upsample minority class ('sexist' == True) to create a roughly 50-50 class distribution
     balanced_df = construction.augment_text(training_data, aug10p, num_threads=8, num_times=3)
+    print(f"No. of balanced training examples: {balanced_df.shape[0]}")
     print(balanced_df)
 
 

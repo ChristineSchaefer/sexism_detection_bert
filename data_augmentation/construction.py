@@ -37,7 +37,7 @@ def augment_text(df, aug, num_threads, num_times):
     # Get rows of data to augment
     to_augment = df[df['sexist'] == True]
     to_augmentX = to_augment['text']
-    to_augmentY = np.ones(len(to_augmentX.index) * num_times, dtype=np.int8)
+    to_augmentY = np.ones(len(to_augmentX.index) * num_times, dtype=bool)
 
     # Build up dictionary containing augmented data
     aug_dict = {'text': [], 'sexist': to_augmentY}
