@@ -1,2 +1,2 @@
 # sexism_detection_bert
-Implementation automatic sexism detection with BERT
+Implementation of automatic sexism detection with BERT
