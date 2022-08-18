@@ -8,7 +8,7 @@ def get_distilbert_tokenizer(model):
 
 
 # Define function to encode text data in batches
-def batch_encode(tokenizer, texts, batch_size, max_length):
+def encode(tokenizer, texts):
     """""""""
     A function that encodes a batch of texts and returns the texts'
     corresponding encodings and attention masks that are ready to be fed 
@@ -27,16 +27,9 @@ def batch_encode(tokenizer, texts, batch_size, max_length):
     input_ids = []
     attention_mask = []
 
-    for i in range(0, len(texts), batch_size):
-        batch = texts[i:i + batch_size]
-        inputs = tokenizer.batch_encode_plus(batch,
-                                             max_length=max_length,
-                                             padding='longest',  # implements dynamic padding
-                                             truncation=True,
-                                             return_attention_mask=True,
-                                             return_token_type_ids=False
-                                             )
-        input_ids.extend(inputs['input_ids'])
-        attention_mask.extend(inputs['attention_mask'])
+    inputs = tokenizer(texts, padding='max_length', truncation=True, return_attention_mask=True, return_token_type_ids=True)
+    input_ids.extend(inputs['input_ids'])
+    attention_mask.extend(inputs['attention_mask'])
+    # NOTE: convertion doesn't work, because lists in input_ids and attention_mask haven't the same length -> not rectangular
 
     return tf.convert_to_tensor(input_ids), tf.convert_to_tensor(attention_mask)

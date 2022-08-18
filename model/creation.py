@@ -24,7 +24,7 @@ def build_model(transformer, max_length, seed, learning_rate):
     # Define input layers
     input_ids_layer = tf.keras.layers.Input(shape=(max_length,),
                                             name='input_ids',
-                                            dtype='int32')
+                                            dtype='int32',)
     input_attention_layer = tf.keras.layers.Input(shape=(max_length,),
                                                   name='input_attention',
                                                   dtype='int32')
@@ -62,10 +62,11 @@ def build_model(transformer, max_length, seed, learning_rate):
     return model
 
 
+# focal loss instead of binary cross entropy because of unbalanced dataset
 def focal_loss(gamma, alpha):
     def focal_loss_fixed(y_true, y_pred):
-        pt_1 = tf.where(tf.equal(y_true, 1), y_pred, tf.ones_like(y_pred))
-        pt_0 = tf.where(tf.equal(y_true, 0), y_pred, tf.zeros_like(y_pred))
+        pt_1 = tf.where(tf.equal(y_true, True), y_pred, tf.ones_like(y_pred))
+        pt_0 = tf.where(tf.equal(y_true, False), y_pred, tf.zeros_like(y_pred))
         return -K.mean(alpha * K.pow(1. - pt_1, gamma) * K.log(pt_1 + K.epsilon())) - K.mean(
                 (1 - alpha) * K.pow(pt_0, gamma) * K.log(1. - pt_0 + K.epsilon()))
 
