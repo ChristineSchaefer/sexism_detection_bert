@@ -85,6 +85,20 @@ def main(arguments):
         verbose=2
     )
 
+    print(train_history1.history)
+
+    # Evaluate the model on the test data using `evaluate`
+    print("Evaluate on test data")
+    results = model.evaluate(x_test, y_test, batch_size=128)
+
+    print("test loss, test acc:", results)
+
+    # Generate predictions (probabilities -- the output of the last layer)
+    # on new data using `predict`
+    print("Generate predictions for 3 samples")
+    predictions = model.predict(x_test[:3])
+    print("predictions shape:", predictions.shape)
+
 
 if __name__ == "__main__":
     parser = argparser.parse()
