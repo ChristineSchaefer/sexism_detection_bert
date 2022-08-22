@@ -3,6 +3,7 @@ from utils import argparser
 import nlpaug.augmenter.word as nlpaw
 from data_augmentation import construction
 from model import creation, config
+from training_model import training
 
 
 def main(arguments):
@@ -18,8 +19,8 @@ def main(arguments):
     # normalize tweets
     normalized_corpus = process_data.normalize(corpus)
 
-    # Split data into test, validate and training set (unbalanced dataset: undersampling)
-    # training
+    # Split data into test, validate and training_model set (unbalanced dataset: undersampling)
+    # training_model
     training_data = normalized_corpus.sample(frac=0.7, random_state=25)
     x_train = training_data.iloc[:, 0]
     y_train = training_data.iloc[:, 1]
@@ -38,14 +39,14 @@ def main(arguments):
     print(f"No. of validation examples: {validate_data.shape[0]}")
     print(f"No. of testing examples: {testing_data.shape[0]}")
 
-    # Use training data to create balanced dataset via data augmentation
+    # Use training_model data to create balanced dataset via data augmentation
     # Define nlpaug augmentation object
     # aug10p = nlpaw.ContextualWordEmbsAug(model_path='distilbert-base-uncased', aug_min=1, aug_p=0.1,
     # action="substitute")
 
     # Upsample minority class ('sexist' == True) to create a roughly 50-50 class distribution
     # balanced_df = construction.augment_text(training_data, aug10p, num_threads=8, num_times=3)
-    # print(f"No. of balanced training examples: {balanced_df.shape[0]}")
+    # print(f"No. of balanced training_model examples: {balanced_df.shape[0]}")
 
     # set distilbert tokenizer
     tknz = tokenizer.get_distilbert_tokenizer('distilbert-base-uncased')
@@ -75,28 +76,18 @@ def main(arguments):
     BATCH_SIZE = 64
     NUM_STEPS = len(x_train.index) // BATCH_SIZE
 
-    train_history1 = model.fit(
-        x=[x_train_ids, x_train_attention],
-        y=y_train.to_numpy(),
-        epochs=EPOCHS,
-        batch_size=BATCH_SIZE,
-        steps_per_epoch=NUM_STEPS,
-        validation_data=([x_valid_ids, x_valid_attention], y_valid.to_numpy()),
-        verbose=2
-    )
-
-    print(train_history1.history)
+    trained_model = training.train(model, x_train_ids, x_train_attention, y_train, EPOCHS, BATCH_SIZE, NUM_STEPS, x_valid_ids, x_valid_attention, y_valid)
 
     # Evaluate the model on the test data using `evaluate`
     print("Evaluate on test data")
-    results = model.evaluate(x_test, y_test, batch_size=128)
+    results = trained_model.evaluate(x_test_ids, x_test_attention, y_test, batch_size=128)
 
     print("test loss, test acc:", results)
 
     # Generate predictions (probabilities -- the output of the last layer)
     # on new data using `predict`
     print("Generate predictions for 3 samples")
-    predictions = model.predict(x_test[:3])
+    predictions = trained_model.predict(x_test[:3])
     print("predictions shape:", predictions.shape)
 
 
