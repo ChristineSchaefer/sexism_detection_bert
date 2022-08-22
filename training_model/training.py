@@ -21,7 +21,7 @@ def train(model, x_train_ids, x_train_attention, y_train, epochs, batch_size, nu
             validation_data=([x_valid_ids, x_valid_attention], y_valid.to_numpy()),
             verbose=2
         )
-        trained_model.save(path + '{model.name}')
+        tf.saved_model.save(trained_model, path + '{model.name}')
         print(trained_model.history)
 
         return trained_model
