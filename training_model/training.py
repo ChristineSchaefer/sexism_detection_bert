@@ -5,7 +5,7 @@ def train(model, x_train_ids, x_train_attention, y_train, epochs, batch_size, nu
     path = 'training_model/model/'
 
     try:
-        loaded_model = tf.saved_model.load(path + '{model.name}')
+        loaded_model = tf.keras.models.load_model(path + '{model.name}')
         print('Load trained model')
         return loaded_model
 
@@ -21,7 +21,8 @@ def train(model, x_train_ids, x_train_attention, y_train, epochs, batch_size, nu
             validation_data=([x_valid_ids, x_valid_attention], y_valid.to_numpy()),
             verbose=2
         )
-        tf.saved_model.save(trained_model, path + '{model.name}')
+        # TODO: save model
+        trained_model.save(path + '{model.name}')
         print(trained_model.history)
 
         return trained_model

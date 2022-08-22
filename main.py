@@ -4,6 +4,7 @@ import nlpaug.augmenter.word as nlpaw
 from data_augmentation import construction
 from model import creation, config
 from training_model import training
+from visualization import visualize
 
 
 def main(arguments):
@@ -39,14 +40,14 @@ def main(arguments):
     print(f"No. of validation examples: {validate_data.shape[0]}")
     print(f"No. of testing examples: {testing_data.shape[0]}")
 
-    # Use training_model data to create balanced dataset via data augmentation
+    # Use training data to create balanced dataset via data augmentation
     # Define nlpaug augmentation object
     # aug10p = nlpaw.ContextualWordEmbsAug(model_path='distilbert-base-uncased', aug_min=1, aug_p=0.1,
     # action="substitute")
 
     # Upsample minority class ('sexist' == True) to create a roughly 50-50 class distribution
     # balanced_df = construction.augment_text(training_data, aug10p, num_threads=8, num_times=3)
-    # print(f"No. of balanced training_model examples: {balanced_df.shape[0]}")
+    # print(f"No. of balanced training examples: {balanced_df.shape[0]}")
 
     # set distilbert tokenizer
     tknz = tokenizer.get_distilbert_tokenizer('distilbert-base-uncased')
@@ -70,6 +71,7 @@ def main(arguments):
     LEARNING_RATE = 5e-5
     RANDOM_STATE = 42
     model = creation.build_model(distilBert, MAX_LENGTH, RANDOM_STATE, LEARNING_RATE)
+    # print(visualize.show_model_structure(model))
 
     # train model
     EPOCHS = 6
@@ -77,7 +79,9 @@ def main(arguments):
     NUM_STEPS = len(x_train.index) // BATCH_SIZE
 
     trained_model = training.train(model, x_train_ids, x_train_attention, y_train, EPOCHS, BATCH_SIZE, NUM_STEPS, x_valid_ids, x_valid_attention, y_valid)
+    visualize.show_training_validation_loss(trained_model)
 
+    # TODO: evaluation
     # Evaluate the model on the test data using `evaluate`
     print("Evaluate on test data")
     results = trained_model.evaluate(x_test_ids, x_test_attention, y_test, batch_size=128)
