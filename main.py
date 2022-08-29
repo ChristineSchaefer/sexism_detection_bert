@@ -1,10 +1,15 @@
+from matplotlib import pyplot as plt
+
 from preprocessing import process_data, tokenizer
 from utils import argparser
 import nlpaug.augmenter.word as nlpaw
 from data_augmentation import construction
 from model import creation, config
-from training_model import training
-from visualization import visualize
+import tensorflow as tf
+import numpy as np
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import roc_auc_score
+import pandas as pd
 
 
 def main(arguments):
@@ -64,35 +69,58 @@ def main(arguments):
     # Initialize the Base Model
     DISTILBERT_DROPOUT = 0.2
     DISTILBERT_ATT_DROPOUT = 0.2
-    distilBert = config.set_model(DISTILBERT_DROPOUT, DISTILBERT_ATT_DROPOUT, 'distilbert-base-uncased')
+    distilBert = config.set_model(DISTILBERT_DROPOUT, DISTILBERT_ATT_DROPOUT, 'distilbert-base-uncased', False)
 
     # Add Classification Head
     MAX_LENGTH = 512
     LEARNING_RATE = 5e-5
     RANDOM_STATE = 42
-    model = creation.build_model(distilBert, MAX_LENGTH, RANDOM_STATE, LEARNING_RATE)
-    # print(visualize.show_model_structure(model))
+    model = creation.build_model(distilBert, MAX_LENGTH, RANDOM_STATE, LEARNING_RATE, True)
+    model.summary()
+    # Save model
+    tf.saved_model.save(model, 'models/unbalanced_model')
 
     # train model
-    EPOCHS = 6
-    BATCH_SIZE = 64
-    NUM_STEPS = len(x_train.index) // BATCH_SIZE
+    # Define callbacks
+    """early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                      mode='min',
+                                                      min_delta=0,
+                                                      patience=0,
+                                                      restore_best_weights=True)"""
+    # start training
+    train_history = model.fit(
+        x=[x_train_ids, x_train_attention],
+        y=y_train.to_numpy(),
+        epochs=6,
+        batch_size=64,
+        steps_per_epoch=(len(x_train.index) // 64),
+        validation_data=([x_valid_ids, x_valid_attention], y_valid.to_numpy()),
+        #callbacks=[early_stopping],
+        verbose=2)
 
-    trained_model = training.train(model, x_train_ids, x_train_attention, y_train, EPOCHS, BATCH_SIZE, NUM_STEPS, x_valid_ids, x_valid_attention, y_valid)
-    visualize.show_training_validation_loss(trained_model)
+    history_df = pd.DataFrame(train_history.history)
+    # Plot training and validation loss over each epoch
+    history_df.loc[:, ['loss', 'val_loss']].plot()
+    plt.title(label='Training + Validation Loss Over Time', fontsize=17, pad=19)
+    plt.xlabel('Epoch', labelpad=14, fontsize=14)
+    plt.ylabel('Focal Loss', labelpad=16, fontsize=14)
+    print("Minimum Validation Loss: {:0.4f}".format(history_df['val_loss'].min()))
 
-    # TODO: evaluation
-    # Evaluate the model on the test data using `evaluate`
-    print("Evaluate on test data")
-    results = trained_model.evaluate(x_test_ids, x_test_attention, y_test, batch_size=128)
+    # Save figure
+    # plt.savefig('figures/unbalanced_trainvalloss.png', dpi=300.0, transparent=True)
 
-    print("test loss, test acc:", results)
+    # Evaluation
+    # Generate predictions
+    y_pred = model.predict([x_test_ids, x_test_attention])
+    y_pred_thresh = np.where(y_pred >= 0.5, 1, 0)
 
-    # Generate predictions (probabilities -- the output of the last layer)
-    # on new data using `predict`
-    print("Generate predictions for 3 samples")
-    predictions = trained_model.predict(x_test[:3])
-    print("predictions shape:", predictions.shape)
+    # Get evaluation results
+    accuracy = accuracy_score(y_test, y_pred_thresh)
+    auc_roc = roc_auc_score(y_test, y_pred)
+
+    print('Accuracy:  ', accuracy)
+
+    print('ROC-AUC:   ', auc_roc)
 
 
 if __name__ == "__main__":

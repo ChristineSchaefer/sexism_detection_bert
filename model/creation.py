@@ -2,7 +2,7 @@ import tensorflow as tf
 from keras import backend as K
 
 
-def build_model(transformer, max_length, seed, learning_rate):
+def build_model(transformer, max_length, seed, learning_rate, compile):
     """""""""
     Template for building a model off of the BERT or DistilBERT architecture
     for a binary classification task.
@@ -54,10 +54,11 @@ def build_model(transformer, max_length, seed, learning_rate):
     # Define the model
     model = tf.keras.Model([input_ids_layer, input_attention_layer], output)
 
-    # Compile the model
-    model.compile(tf.keras.optimizers.Adam(learning_rate),
-                  loss=focal_loss(gamma=2., alpha=.25),
-                  metrics=['accuracy'])
+    if compile is True:
+        # Compile the model
+        model.compile(tf.keras.optimizers.Adam(learning_rate),
+                      loss=focal_loss(gamma=2., alpha=.25),
+                      metrics=['accuracy'])
 
     return model
 

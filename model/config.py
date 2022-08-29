@@ -1,7 +1,7 @@
 from transformers import TFDistilBertModel, DistilBertConfig
 
 
-def set_model(dropout, att_dropout, model):
+def set_model(dropout, att_dropout, model, trainable):
     # Configure DistilBERT's initialization
     config = DistilBertConfig(dropout=dropout,
                               attention_dropout=att_dropout,
@@ -13,6 +13,6 @@ def set_model(dropout, att_dropout, model):
 
     # Make DistilBERT layers untrainable
     for layer in distilBERT.layers:
-        layer.trainable = False
+        layer.trainable = trainable
 
     return distilBERT
