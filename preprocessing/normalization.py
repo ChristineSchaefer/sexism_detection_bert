@@ -63,6 +63,19 @@ def set_to_string(data):
     return str(data)
 
 
+def normalize_list(data):
+    return_list = []
+    for element in data:
+        if type(element) is str:
+            return_list.append(element)
+        if type(element) is list:
+            if len(element) > 0:
+                return_list.append(element[0])
+            else:
+                return_list.append(str(element))
+    return return_list
+
+
 if __name__ == '__main__':
     reg = r"MENTION[A-Za-z0-9_]*"
     tweet_1 = "MENTION3074 Was it Marylin M who said that a woman who aspires to be as good as man lacks ambition...!? ;)"

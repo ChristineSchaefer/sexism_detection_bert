@@ -1,0 +1,78 @@
+C:\Users\Christine\PycharmProjects\sexism_detection_bert\venv\Scripts\python.exe C:/Users/Christine/PycharmProjects/sexism_detection_bert/main.py C:\Users\Christine\Downloads\sexism_data.csv text sexist
+Perc. of sexist examples: 13.271220013205193
+Perc. of no_sexist examples: 86.7287799867948
+100%|██████████| 3/3 [02:41<00:00, 53.79s/it]
+No. of balanced training examples: 13346
+No. of training examples: 13346
+No. of validation examples: 200
+No. of testing examples: 85
+C:\Users\Christine\PycharmProjects\sexism_detection_bert\data_augmentation\construction.py:51: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  return df.append(aug_df, ignore_index=True).sample(frac=1, random_state=42)
+2022-08-30 12:05:07.449479: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-08-30 12:05:07.852090: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1532] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 6615 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1070 Ti, pci bus id: 0000:01:00.0, compute capability: 6.1
+Some layers from the model checkpoint at distilbert-base-uncased were not used when initializing TFDistilBertModel: ['vocab_projector', 'vocab_transform', 'vocab_layer_norm', 'activation_13']
+- This IS expected if you are initializing TFDistilBertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing TFDistilBertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+All the layers of TFDistilBertModel were initialized from the model checkpoint at distilbert-base-uncased.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use TFDistilBertModel for predictions without further training.
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_ids (InputLayer)         [(None, 512)]        0           []                               
+                                                                                                  
+ input_attention (InputLayer)   [(None, 512)]        0           []                               
+                                                                                                  
+ tf_distil_bert_model (TFDistil  TFBaseModelOutput(l  66362880   ['input_ids[0][0]',              
+ BertModel)                     ast_hidden_state=(N               'input_attention[0][0]']        
+                                one, 512, 768),                                                   
+                                 hidden_states=((No                                               
+                                ne, 512, 768),                                                    
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768)),                                               
+                                 attentions=None)                                                 
+                                                                                                  
+ tf.__operators__.getitem (Slic  (None, 768)         0           ['tf_distil_bert_model[0][7]']   
+ ingOpLambda)                                                                                     
+                                                                                                  
+ dense (Dense)                  (None, 1)            769         ['tf.__operators__.getitem[0][0]'
+                                                                 ]                                
+                                                                                                  
+==================================================================================================
+Total params: 66,363,649
+Trainable params: 769
+Non-trainable params: 66,362,880
+
+DISTILBERT_DROPOUT = 0.2
+DISTILBERT_ATT_DROPOUT = 0.2
+__________________________________________________________________________________________________
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000001E966519130>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000001E96651F9A0>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000001E906FF9EB0>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000001E906FF6CA0>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000001E96646CAF0>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000001E935083640>, because it is not built.
+WARNING:absl:Found untraced functions such as embeddings_layer_call_fn, embeddings_layer_call_and_return_conditional_losses, transformer_layer_call_fn, transformer_layer_call_and_return_conditional_losses, LayerNorm_layer_call_fn while saving (showing 5 of 164). These functions will not be directly callable after loading.
+Epoch 1/6
+208/208 - 269s - loss: 0.1758 - accuracy: 0.4411 - val_loss: 0.1218 - val_accuracy: 0.5400 - 269s/epoch - 1s/step
+Epoch 2/6
+208/208 - 268s - loss: 0.0892 - accuracy: 0.5659 - val_loss: 0.0681 - val_accuracy: 0.8150 - 268s/epoch - 1s/step
+Epoch 3/6
+208/208 - 267s - loss: 0.0785 - accuracy: 0.6012 - val_loss: 0.0566 - val_accuracy: 0.8250 - 267s/epoch - 1s/step
+Epoch 4/6
+208/208 - 267s - loss: 0.0739 - accuracy: 0.6147 - val_loss: 0.0518 - val_accuracy: 0.8300 - 267s/epoch - 1s/step
+Epoch 5/6
+208/208 - 267s - loss: 0.0700 - accuracy: 0.6296 - val_loss: 0.0490 - val_accuracy: 0.8400 - 267s/epoch - 1s/step
+Epoch 6/6
+208/208 - 267s - loss: 0.0663 - accuracy: 0.6394 - val_loss: 0.0466 - val_accuracy: 0.8450 - 267s/epoch - 1s/step
+Minimum Validation Loss: 0.0466
+3/3 [==============================] - 2s 447ms/step
+Accuracy:   0.9058823529411765
+ROC-AUC:    0.8260233918128655
+
+Process finished with exit code 0
