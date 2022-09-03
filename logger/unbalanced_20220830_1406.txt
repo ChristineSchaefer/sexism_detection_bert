@@ -55,6 +55,7 @@ Non-trainable params: 66,362,880
 
 DISTILBERT_DROPOUT = 0.2
 DISTILBERT_ATT_DROPOUT = 0.2
+layer.trainable = False
 __________________________________________________________________________________________________
 ----- Save model -----
 WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x000002897FA983A0>, because it is not built.

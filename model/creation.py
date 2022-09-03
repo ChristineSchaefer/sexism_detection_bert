@@ -39,10 +39,6 @@ def build_model(transformer, max_length, seed, learning_rate, compile):
     # Splicing out the [CLS] tokens gives us 2D data.
     cls_token = last_hidden_state[:, 0, :]
 
-    ##                                                 ##
-    ## Define additional dropout and dense layers here ##
-    ##                                                 ##
-
     # Define a single node that makes up the output layer (for binary classification)
     output = tf.keras.layers.Dense(1,
                                    activation='sigmoid',

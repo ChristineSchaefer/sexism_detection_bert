@@ -12,6 +12,7 @@ def set_model(dropout, att_dropout, model, trainable):
     distilBERT = TFDistilBertModel.from_pretrained(model, config=config)
 
     # Make DistilBERT layers untrainable
+    # because of computational capacity it is not possible to unfreeze
     for layer in distilBERT.layers:
         layer.trainable = trainable
 
