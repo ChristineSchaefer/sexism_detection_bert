@@ -5,7 +5,7 @@ from utils import argparser
 from model import creation, config
 import tensorflow as tf
 import numpy as np
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support, roc_auc_score, classification_report
+from sklearn.metrics import accuracy_score, roc_auc_score, classification_report
 import pandas as pd
 
 
@@ -122,6 +122,7 @@ def main(arguments):
     # Generate predictions
     y_pred = model.predict([x_test_ids, x_test_attention])
     y_pred_thresh = np.where(y_pred >= 0.5, 1, 0)
+    y_pred_bool = np.argmax(y_pred, axis=1)
 
     # Get evaluation results
     accuracy = accuracy_score(y_test, y_pred_thresh)
@@ -136,9 +137,9 @@ def main(arguments):
 
     pred_recall_fscore_micro = precision_recall_fscore_support(y_test, y_pred, average='micro')
 
-    print("Prediction, Recall, F-Score Support - micro: ", pred_recall_fscore_micro)
+    print("Prediction, Recall, F-Score Support - micro: ", pred_recall_fscore_micro)"""
 
-    print(classification_report(y_test, y_pred))"""
+    print(classification_report(y_test, y_pred_bool))
 
 
 if __name__ == "__main__":
