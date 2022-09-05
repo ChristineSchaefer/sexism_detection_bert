@@ -1,6 +1,8 @@
 import tensorflow as tf
 from keras import backend as K
 
+from model.evaluation import f1_m, precision_m, recall_m
+
 
 def build_model(transformer, max_length, seed, learning_rate, compile):
     """""""""
@@ -54,7 +56,7 @@ def build_model(transformer, max_length, seed, learning_rate, compile):
         # Compile the model
         model.compile(tf.keras.optimizers.Adam(learning_rate),
                       loss=focal_loss(gamma=2., alpha=.25),
-                      metrics=['accuracy'])
+                      metrics=['accuracy', f1_m, precision_m, recall_m])
 
     return model
 
