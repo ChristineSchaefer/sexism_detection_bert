@@ -99,7 +99,7 @@ def main(arguments):
     train_history = model.fit(
         x=[x_train_ids, x_train_attention],
         y=y_train.to_numpy(),
-        epochs=6,
+        epochs=10,
         batch_size=64,
         steps_per_epoch=(len(x_train.index) // 64),
         validation_data=([x_valid_ids, x_valid_attention], y_valid.to_numpy()),
@@ -140,7 +140,6 @@ def main(arguments):
     print("Prediction, Recall, F-Score Support - micro: ", pred_recall_fscore_micro)"""
 
     print(classification_report(y_test, y_pred_bool))
-
 
 
 if __name__ == "__main__":

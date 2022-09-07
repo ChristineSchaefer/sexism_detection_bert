@@ -55,7 +55,7 @@ def build_model(transformer, max_length, seed, learning_rate, compile):
     if compile is True:
         # Compile the model
         model.compile(tf.keras.optimizers.Adam(learning_rate),
-                      loss=focal_loss(gamma=2., alpha=.25),
+                      loss="binary_crossentropy",
                       metrics=['accuracy', f1_m, precision_m, recall_m])
 
     return model
