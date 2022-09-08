@@ -1,0 +1,98 @@
+C:\Users\Christine\PycharmProjects\sexism_detection_bert\venv\Scripts\python.exe C:/Users/Christine/PycharmProjects/sexism_detection_bert/main.py C:\Users\Christine\Downloads\sexism_data.csv text sexist False 
+----- Start -----
+False
+Number of sexist examples: 1809 
+ Perc.: 13.271220013205193
+Number. of no_sexist examples: 11822 
+ Perc.: 86.7287799867948
+----- Normalization -----
+----- Split data into training, validation and test set -----
+No. of training examples: 9542
+No. of validation examples: 2862
+No. of testing examples: 1227
+----- Use distilbert tokenizer to encode data -----
+2022-09-08 09:06:42.295343: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-09-08 09:06:42.715065: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1532] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 6615 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1070 Ti, pci bus id: 0000:01:00.0, compute capability: 6.1
+----- Initialize base model -----
+Some layers from the model checkpoint at distilbert-base-uncased were not used when initializing TFDistilBertModel: ['vocab_projector', 'activation_13', 'vocab_layer_norm', 'vocab_transform']
+- This IS expected if you are initializing TFDistilBertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing TFDistilBertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+All the layers of TFDistilBertModel were initialized from the model checkpoint at distilbert-base-uncased.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use TFDistilBertModel for predictions without further training.
+----- Add classification head -----
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_ids (InputLayer)         [(None, 512)]        0           []                               
+                                                                                                  
+ input_attention (InputLayer)   [(None, 512)]        0           []                               
+                                                                                                  
+ tf_distil_bert_model (TFDistil  TFBaseModelOutput(l  66362880   ['input_ids[0][0]',              
+ BertModel)                     ast_hidden_state=(N               'input_attention[0][0]']        
+                                one, 512, 768),                                                   
+                                 hidden_states=((No                                               
+                                ne, 512, 768),                                                    
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768),                                                
+                                 (None, 512, 768)),                                               
+                                 attentions=None)                                                 
+                                                                                                  
+ tf.__operators__.getitem (Slic  (None, 768)         0           ['tf_distil_bert_model[0][7]']   
+ ingOpLambda)                                                                                     
+                                                                                                  
+ dense (Dense)                  (None, 1)            769         ['tf.__operators__.getitem[0][0]'
+                                                                 ]                                
+                                                                                                  
+==================================================================================================
+Total params: 66,363,649
+Trainable params: 769
+Non-trainable params: 66,362,880
+__________________________________________________________________________________________________
+----- Save model -----
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x00000192E26C0340>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x00000192E371DAF0>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x00000192E3730250>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x00000192E3747970>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x00000192E372A0D0>, because it is not built.
+WARNING:tensorflow:Skipping full serialization of Keras layer <keras.layers.regularization.dropout.Dropout object at 0x00000192E37357F0>, because it is not built.
+WARNING:absl:Found untraced functions such as embeddings_layer_call_fn, embeddings_layer_call_and_return_conditional_losses, transformer_layer_call_fn, transformer_layer_call_and_return_conditional_losses, LayerNorm_layer_call_fn while saving (showing 5 of 164). These functions will not be directly callable after loading.
+----- Start training -----
+Epoch 1/6
+149/149 - 240s - loss: 0.2662 - accuracy: 0.2615 - f1_m: 0.2304 - precision_m: 0.1355 - recall_m: 0.8512 - val_loss: 0.1626 - val_accuracy: 0.3260 - val_f1_m: 0.2204 - val_precision_m: 0.1325 - val_recall_m: 0.7336 - 240s/epoch - 2s/step
+Epoch 2/6
+149/149 - 236s - loss: 0.1106 - accuracy: 0.6097 - f1_m: 0.1933 - precision_m: 0.1400 - recall_m: 0.3703 - val_loss: 0.0751 - val_accuracy: 0.7980 - val_f1_m: 0.1045 - val_precision_m: 0.1305 - val_recall_m: 0.0966 - 236s/epoch - 2s/step
+Epoch 3/6
+149/149 - 236s - loss: 0.0679 - accuracy: 0.7886 - f1_m: 0.0905 - precision_m: 0.1099 - recall_m: 0.0899 - val_loss: 0.0508 - val_accuracy: 0.8564 - val_f1_m: 0.0142 - val_precision_m: 0.0500 - val_recall_m: 0.0085 - 236s/epoch - 2s/step
+Epoch 4/6
+149/149 - 236s - loss: 0.0537 - accuracy: 0.8389 - f1_m: 0.0378 - precision_m: 0.0839 - recall_m: 0.0280 - val_loss: 0.0431 - val_accuracy: 0.8571 - val_f1_m: 0.0000e+00 - val_precision_m: 0.0000e+00 - val_recall_m: 0.0000e+00 - 236s/epoch - 2s/step
+Epoch 5/6
+149/149 - 236s - loss: 0.0485 - accuracy: 0.8531 - f1_m: 0.0155 - precision_m: 0.0470 - recall_m: 0.0095 - val_loss: 0.0401 - val_accuracy: 0.8679 - val_f1_m: 0.0000e+00 - val_precision_m: 0.0000e+00 - val_recall_m: 0.0000e+00 - 236s/epoch - 2s/step
+Epoch 6/6
+149/149 - 236s - loss: 0.0448 - accuracy: 0.8601 - f1_m: 0.0157 - precision_m: 0.0459 - recall_m: 0.0098 - val_loss: 0.0387 - val_accuracy: 0.8679 - val_f1_m: 0.0000e+00 - val_precision_m: 0.0000e+00 - val_recall_m: 0.0000e+00 - 236s/epoch - 2s/step
+Minimum Validation Loss: 0.0387
+----- Finish training. Start evalution -----
+39/39 [==============================] - 21s 525ms/step
+C:\Users\Christine\PycharmProjects\sexism_detection_bert\venv\lib\site-packages\sklearn\metrics\_classification.py:1334: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+C:\Users\Christine\PycharmProjects\sexism_detection_bert\venv\lib\site-packages\sklearn\metrics\_classification.py:1334: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+C:\Users\Christine\PycharmProjects\sexism_detection_bert\venv\lib\site-packages\sklearn\metrics\_classification.py:1334: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+Accuracy:   0.8671556642216789
+ROC-AUC:    0.5452281009271646
+              precision    recall  f1-score   support
+
+       False       0.87      1.00      0.93      1064
+        True       0.00      0.00      0.00       163
+
+    accuracy                           0.87      1227
+   macro avg       0.43      0.50      0.46      1227
+weighted avg       0.75      0.87      0.81      1227
+
+
+Process finished with exit code 0

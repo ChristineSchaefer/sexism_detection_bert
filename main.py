@@ -84,7 +84,7 @@ def main(arguments):
 
     print("----- Save model -----")
     # Save model
-    tf.saved_model.save(model, 'models/balanced_model')
+    tf.saved_model.save(model, 'models/unbalanced_model')
 
     # train model
     # Define callbacks
@@ -115,7 +115,7 @@ def main(arguments):
     print("Minimum Validation Loss: {:0.4f}".format(history_df['val_loss'].min()))
 
     # Save figure
-    plt.savefig('balanced_trainvalloss.png', dpi=300.0, transparent=True)
+    plt.savefig('unbalanced_trainvalloss.png', dpi=300.0, transparent=True)
 
     print("----- Finish training. Start evalution -----")
     # Evaluation
