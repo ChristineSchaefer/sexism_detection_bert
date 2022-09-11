@@ -1,7 +1,18 @@
+# IMPORTS
 import re
 
 
 def normalize(string):
+    """
+        Normalize given string.
+
+        Input:
+            - string: string
+
+        Output:
+            - normalized string
+    """
+
     reg = r"MENTION[A-Za-z0-9_]*"
     string = remove_emojis(string)
     string = remove_hashtags(string)
@@ -12,6 +23,15 @@ def normalize(string):
 
 
 def remove_emojis(string):
+    """
+        Remove emojis.
+
+            Input:
+                - string: string
+
+            Output:
+                - string without emojis
+    """
     emoj = re.compile("["
                       u"\U0001F600-\U0001F64F"  # emoticons
                       u"\U0001F300-\U0001F5FF"  # symbols & pictographs
@@ -36,34 +56,89 @@ def remove_emojis(string):
 
 
 def remove_hashtags(string):
+    """
+        Remove hashtags (#).
+
+            Input:
+                - string: string
+
+            Output:
+                - string without hashtags
+    """
     clean_tweet = re.sub(r"#[A-Za-z0-9_]+", "", string)
     clean_tweet = re.sub(r' +', ' ', clean_tweet)
     return clean_tweet.strip()
 
 
 def remove_mentions(string):
+    """
+        Remove mentions (@).
+
+            Input:
+                - string: string
+
+            Output:
+                - string without mentions
+    """
     clean_tweet = re.sub(r"@[A-Za-z0-9_]+", "", string)
     clean_tweet = re.sub(r' +', ' ', clean_tweet)
     return clean_tweet.strip()
 
 
 def remove_links(string):
+    """
+        Remove links.
+
+            Input:
+                - string: string
+
+            Output:
+                - string without links
+    """
     clean_tweet = re.sub(r"https?://\S+", "", string)
     clean_tweet = re.sub(r' +', ' ', clean_tweet)
     return clean_tweet.strip()
 
 
 def remove_word(string, regex):
+    """
+        Remove specific regex.
+
+            Input:
+                - string: string
+                - regex: string
+
+            Output:
+                - string without regex
+    """
     clean_tweet = re.sub(regex, "", string)
     clean_tweet = re.sub(r' +', ' ', clean_tweet)
     return clean_tweet.strip()
 
 
 def set_to_string(data):
+    """
+        Convert given data into string.
+
+            Input:
+                - data
+
+            Output:
+                - data as string
+    """
     return str(data)
 
 
 def normalize_list(data):
+    """
+        Iterate over list and convert nested list to list.
+
+            Input:
+                - data: nested list
+
+            Output:
+                - list
+    """
     return_list = []
     for element in data:
         if type(element) is str:
@@ -74,20 +149,3 @@ def normalize_list(data):
             else:
                 return_list.append(str(element))
     return return_list
-
-
-if __name__ == '__main__':
-    reg = r"MENTION[A-Za-z0-9_]*"
-    tweet_1 = "MENTION3074 Was it Marylin M who said that a woman who aspires to be as good as man lacks ambition...!? ;)"
-    tweet_2 = "MENTION1358 I get where you are coming from, and it's annoying, to be sure. But it's not considered harassment under Twitter's ToS."
-    text = u'This is a smiley face \U0001f602'
-    link = "This is a text with a URL https://www.java2blog.com/ to remove."
-    tweet = "@__therealanna @heyitsrose let's have a zoom meeting tonite! #quarantinelife #girlsnight #onlinehangout"
-    no_string = 1234
-    print(remove_emojis(text))
-    print(remove_hashtags(tweet))
-    print(remove_mentions(tweet))
-    print(remove_links(link))
-    print(remove_word(tweet_1, reg))
-    print(remove_word(tweet_2, reg))
-    print(type(set_to_string(no_string)))
