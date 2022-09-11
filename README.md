@@ -1,5 +1,4 @@
 ## Automatische Erkennung von sexistischem Content auf Twitter mit BERT
-***
 
 **Zielsetzung:**
 
